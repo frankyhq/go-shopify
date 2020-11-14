@@ -152,6 +152,7 @@ type Order struct {
 	ContactEmail          string           `json:"contact_email,omitempty"`
 	Metafields            []Metafield      `json:"metafields,omitempty"`
 	InventoryBehaviour    string           `json:"inventory_behaviour,omitempty"`
+	SendReceipt           bool             `json:"send_receipt,omitempty"`
 }
 
 type Address struct {
