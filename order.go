@@ -23,7 +23,7 @@ type OrderService interface {
 	Create(Order) (*Order, error)
 	Update(Order) (*Order, error)
 	Cancel(int64, interface{}) (*Order, error)
-	Refund(int64, interface{}) (*Order, error)
+	Refund(int64, interface{}) (*Refund, error)
 	Close(int64) (*Order, error)
 	Open(int64) (*Order, error)
 
@@ -260,6 +260,11 @@ type OrderResource struct {
 	Order *Order `json:"order"`
 }
 
+// Represents the result from the orders/X.json endpoint
+type RefundResource struct {
+	Refund *Refund `json:"refund"`
+}
+
 // Represents the result from the orders.json endpoint
 type OrdersResource struct {
 	Orders []Order `json:"orders"`
@@ -447,11 +452,11 @@ func (s *OrderServiceOp) Cancel(orderID int64, options interface{}) (*Order, err
 }
 
 // Refund order
-func (s *OrderServiceOp) Refund(orderID int64, options interface{}) (*Order, error) {
+func (s *OrderServiceOp) Refund(orderID int64, options interface{}) (*Refund, error) {
 	path := fmt.Sprintf("%s/%d/refunds.json", ordersBasePath, orderID)
-	resource := new(OrderResource)
+	resource := new(RefundResource)
 	err := s.client.Post(path, options, resource)
-	return resource.Order, err
+	return resource.Refund, err
 }
 
 // Close order
