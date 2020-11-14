@@ -348,14 +348,23 @@ type ClientDetails struct {
 }
 
 type Refund struct {
-	Id              int64            `json:"id,omitempty"`
-	OrderId         int64            `json:"order_id,omitempty"`
-	CreatedAt       *time.Time       `json:"created_at,omitempty"`
-	Note            string           `json:"note,omitempty"`
-	Restock         bool             `json:"restock,omitempty"`
-	UserId          int64            `json:"user_id,omitempty"`
-	RefundLineItems []RefundLineItem `json:"refund_line_items,omitempty"`
-	Transactions    []Transaction    `json:"transactions,omitempty"`
+	Id                int64            `json:"id,omitempty"`
+	OrderId           int64            `json:"order_id,omitempty"`
+	CreatedAt         *time.Time       `json:"created_at,omitempty"`
+	Note              string           `json:"note,omitempty"`
+	Restock           bool             `json:"restock,omitempty"`
+	UserId            int64            `json:"user_id,omitempty"`
+	RefundLineItems   []RefundLineItem `json:"refund_line_items,omitempty"`
+	Transactions      []Transaction    `json:"transactions,omitempty"`
+	Notify            bool             `json:"notify,omitempty"`
+	Currency          string           `json:"currency,omitempty"`
+	DiscrepancyReason string           `json:"discrepancy_reason,omitempty"`
+	Shipping          *RefundShipping  `json:"shipping,omitempty"`
+}
+
+type RefundShipping struct {
+	FullRefund bool             `json:"full_refund,omitempty"`
+	Amount     *decimal.Decimal `json:"amount,omitempty"`
 }
 
 type RefundLineItem struct {
