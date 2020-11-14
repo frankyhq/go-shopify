@@ -23,6 +23,7 @@ type OrderService interface {
 	Create(Order) (*Order, error)
 	Update(Order) (*Order, error)
 	Cancel(int64, interface{}) (*Order, error)
+	RefundCalculate(int64, interface{}) (*Refund, error)
 	Refund(int64, interface{}) (*Refund, error)
 	Close(int64) (*Order, error)
 	Open(int64) (*Order, error)
@@ -449,6 +450,14 @@ func (s *OrderServiceOp) Cancel(orderID int64, options interface{}) (*Order, err
 	resource := new(OrderResource)
 	err := s.client.Post(path, options, resource)
 	return resource.Order, err
+}
+
+// Refund Calculate order
+func (s *OrderServiceOp) RefundCalculate(orderID int64, options interface{}) (*Refund, error) {
+	path := fmt.Sprintf("%s/%d/refunds/calculate.json", ordersBasePath, orderID)
+	resource := new(RefundResource)
+	err := s.client.Post(path, options, resource)
+	return resource.Refund, err
 }
 
 // Refund order
