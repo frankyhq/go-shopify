@@ -23,6 +23,7 @@ type OrderService interface {
 	Create(Order) (*Order, error)
 	Update(Order) (*Order, error)
 	Cancel(int64, interface{}) (*Order, error)
+	Refund(int64, interface{}) (*Order, error)
 	Close(int64) (*Order, error)
 	Open(int64) (*Order, error)
 
@@ -76,6 +77,12 @@ type OrderCancelOptions struct {
 	Reason   string           `json:"reason,omitempty"`
 	Email    bool             `json:"email,omitempty"`
 	Refund   *Refund          `json:"refund,omitempty"`
+}
+
+// A struct of all available order cancel options.
+// See: https://help.shopify.com/api/reference/refund#index
+type OrderRefundOptions struct {
+	Refund *Refund `json:"refund,omitempty"`
 }
 
 // Order represents a Shopify order
@@ -425,6 +432,14 @@ func (s *OrderServiceOp) Update(order Order) (*Order, error) {
 // Cancel order
 func (s *OrderServiceOp) Cancel(orderID int64, options interface{}) (*Order, error) {
 	path := fmt.Sprintf("%s/%d/cancel.json", ordersBasePath, orderID)
+	resource := new(OrderResource)
+	err := s.client.Post(path, options, resource)
+	return resource.Order, err
+}
+
+// Refund order
+func (s *OrderServiceOp) Refund(orderID int64, options interface{}) (*Order, error) {
+	path := fmt.Sprintf("%s/%d/refunds.json", ordersBasePath, orderID)
 	resource := new(OrderResource)
 	err := s.client.Post(path, options, resource)
 	return resource.Order, err
